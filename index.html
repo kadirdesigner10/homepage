@@ -1,79 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<style>
+  </head>
+  <style>
     .container {
-        width: 300px;
-        height: 500px;
-        background-color: #565959;
-        padding: 25px;
+      width: 300px;
+      height: 500px;
+      background-color: #565959;
+      padding: 25px;
     }
     button {
-        padding: 0  10px;
-        height: 35px; width: 50px;
+      padding: 0 10px;
+      height: 35px;
+      width: 50px;
     }
     input {
-        height: 30px;width: 230px;
+      height: 30px;
+      width: 230px;
     }
     p {
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
-        cursor: pointer;
-        /* border-style: solid; */
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-color: gray;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      cursor: pointer;
+      /* border-style: solid; */
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-color: gray;
     }
     P:hover {
-        color: antiquewhite;
+      color: antiquewhite;
     }
-</style>
-<body>
+  </style>
+  <body>
     <div class="container">
-        <input type="text" id="todo">
-        <button>Add</button>
-        <div class="todos">
-            <!-- <p>asdasda</p> -->
-        </div>
+      <input type="text" id="todo" />
+      <button>Add</button>
+      <div class="todos">
+        <!-- <p>asdasda</p> -->
+      </div>
     </div>
     <script>
-        const input = document.querySelector('#todo')
-        const btn = document.querySelector('button')
-        const todosdiv = document.querySelector('.todos')
-        let todosArr = [];
-        let para;
-        window.addEventListener("load", (event) => {
-            let x = JSON.parse(localStorage.getItem('todosItems'))
-            x.forEach(element => {
-                para = document.createElement('p');
-                todosdiv.appendChild(para).innerHTML = element;
-            });
+      const input = document.querySelector("#todo");
+      const btn = document.querySelector("button");
+      const todosdiv = document.querySelector(".todos");
 
-});
-   
-        btn.addEventListener('click',addTodo)
-            function addTodo () {
-            para = document.createElement('p')
-            todosArr.push(input.value)
-            todosdiv.appendChild(para).innerHTML = input.value;
-            input.value = '';
-            localStorage.setItem('todosItems',JSON.stringify(todosArr))
-            para.addEventListener('click',(curTodo)=>{
-                para.style.textDecoration='line-through';
-        })
-        para.addEventListener('dblclick',(curTodo)=>{
-                para.remove()
-                
+      let todosArr = [];
+      btn.addEventListener("click", addevent);
 
-            })   
-            }
+      // Execute a function when the user presses a key on the keyboard
+      input.addEventListener("keypress", function (event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          btn.click();
+        }
+      });
+      window.onload = () => {
+        let x = JSON.parse(localStorage.getItem("todos"));
+        console.log(x);
+        x.forEach((element) => {
+          addtodo(element);
+        });
+      };
 
+      function addevent() {
+        todosArr.push(input.value);
+        localStorage.setItem("todos", JSON.stringify(todosArr));
+        addtodo(input.value);
+      }
 
-
+      function addtodo(todo) {
+        let paragraph = document.createElement("p");
+        paragraph.textContent = todo;
+        todosdiv.appendChild(paragraph);
+        input.value = "";
+        //-------------------------------------------------------
+        paragraph.addEventListener("click", () => {
+          paragraph.style.textDecoration = "line-through";
+          removeTodo(todo);
+        });
+        //-------------------------------------------------------
+        paragraph.addEventListener("dblclick", () => {
+          todosdiv.removeChild(paragraph);
+          localStorage.setItem("todos", JSON.stringify(todosArr));
+        });
+        function removeTodo(todo) {
+          let x = todosArr.indexOf(todo);
+          if (x > -1) todosArr.splice(x, 1);
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
