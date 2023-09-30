@@ -45,29 +45,35 @@
         const btn = document.querySelector('button')
         const todosdiv = document.querySelector('.todos')
         let todosArr = [];
+        let para;
         window.addEventListener("load", (event) => {
             let x = JSON.parse(localStorage.getItem('todosItems'))
-            x.array.forEach(element => {
-                let para = document.createElement('p')
-                todosdiv.appendChild(para).innerHTML = x[index]        
+            x.forEach(element => {
+                para = document.createElement('p');
+                todosdiv.appendChild(para).innerHTML = element;
             });
+
 });
    
         btn.addEventListener('click',addTodo)
             function addTodo () {
-            let para = document.createElement('p')
+            para = document.createElement('p')
             todosArr.push(input.value)
             todosdiv.appendChild(para).innerHTML = input.value;
             input.value = '';
             localStorage.setItem('todosItems',JSON.stringify(todosArr))
             para.addEventListener('click',(curTodo)=>{
                 para.style.textDecoration='line-through';
-                })
-            para.addEventListener('dblclick',(curTodo)=>{
+        })
+        para.addEventListener('dblclick',(curTodo)=>{
                 para.remove()
-            })       
-        }
-console.log(todosArr);
+                
+
+            })   
+            }
+
+
+
     </script>
 </body>
 </html>
